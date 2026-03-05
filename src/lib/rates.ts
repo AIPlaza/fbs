@@ -52,6 +52,8 @@ export const CALC_CONFIG = {
         sepa: 2,            // USD fixed
         ach: 5,             // USD fixed
         wire: 25,           // USD fixed
-        crypto: 0.005       // 0.5%
+        crypto: 0.005,      // 0.5%
+        trc20: 0,           // 0 USD inbound
+        erc20: 0            // 0 USD inbound
     }
 };

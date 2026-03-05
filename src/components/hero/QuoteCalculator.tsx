@@ -8,17 +8,17 @@ import { trackWhatsAppClick } from "@/lib/analytics";
 import GoldButton from "@/components/ui/GoldButton";
 import GlassCard from "@/components/ui/GlassCard";
 
-type InputCurrency = "USD" | "EUR";
+type InputCurrency = "USD" | "EUR" | "USDT";
 type OutputCurrency = "COP" | "USDT";
-type RouteMethod = "wire" | "ach" | "sepa";
+type RouteMethod = "wire" | "ach" | "sepa" | "trc20" | "erc20";
 
 export default function QuoteCalculator() {
     const t = useTranslations("Hero");
 
     const [amount, setAmount] = useState<number | "">("");
-    const [fromCurrency, setFromCurrency] = useState<InputCurrency>("USD");
+    const [fromCurrency, setFromCurrency] = useState<InputCurrency>("USDT");
     const [toCurrency, setToCurrency] = useState<OutputCurrency>("COP");
-    const [routeMethod, setRouteMethod] = useState<RouteMethod>("wire");
+    const [routeMethod, setRouteMethod] = useState<RouteMethod>("trc20");
 
     const [rates, setRates] = useState<Rates | null>(null);
     const [loading, setLoading] = useState(true);
@@ -44,7 +44,8 @@ export default function QuoteCalculator() {
     // Set default route method based on input currency
     useEffect(() => {
         if (fromCurrency === "EUR") setRouteMethod("sepa");
-        if (fromCurrency === "USD" && routeMethod === "sepa") setRouteMethod("wire");
+        if (fromCurrency === "USD" && routeMethod !== "wire" && routeMethod !== "ach") setRouteMethod("wire");
+        if (fromCurrency === "USDT" && routeMethod !== "trc20" && routeMethod !== "erc20") setRouteMethod("trc20");
     }, [fromCurrency, routeMethod]);
 
     // Math Engine Logic
@@ -52,7 +53,8 @@ export default function QuoteCalculator() {
         const numAmount = Number(amount) || 0;
 
         // Return 0 if below minimum or empty
-        if (numAmount < 500) return { netAmount: 0, usdBase: 0, customQuote: true };
+        const minAmount = 100; // Updated according to fixes.md US43
+        if (numAmount < minAmount) return { netAmount: 0, usdBase: 0, customQuote: true };
 
         if (!rates) return { netAmount: 0, usdBase: 0, customQuote: false };
 
@@ -65,7 +67,7 @@ export default function QuoteCalculator() {
         }
 
         // 2. Deduct Rail Fees (fixed USD) (US27, US28)
-        const railFee = CALC_CONFIG.fees[routeMethod];
+        const railFee = (CALC_CONFIG.fees as any)[routeMethod] || 0;
         let netUsd = usdBase - railFee;
         if (netUsd < 0) netUsd = 0;
 
@@ -127,10 +129,11 @@ export default function QuoteCalculator() {
         if (!isNaN(num)) setAmount(num);
     };
 
-    // Auto-correct on blur (US07)
+    // Auto-correct on blur
     const handleBlur = () => {
         const num = Number(amount);
-        if (num > 0 && num < 500) setAmount(500);
+        const minAmount = 100;
+        if (num > 0 && num < minAmount) setAmount(minAmount);
     };
 
     return (
@@ -148,7 +151,7 @@ export default function QuoteCalculator() {
                             value={amount}
                             onChange={handleAmountChange}
                             onBlur={handleBlur}
-                            placeholder="Mínimo 500"
+                            placeholder="Mínimo 100"
                             className="w-full bg-surface-alt border border-white/5 rounded-2xl py-4 pl-4 pr-32 text-2xl font-bold text-white focus:outline-none focus:border-gold-deep/50 transition-colors"
                         />
                         <div className="absolute right-2 top-2 bottom-2 flex gap-1">
@@ -159,6 +162,7 @@ export default function QuoteCalculator() {
                             >
                                 <option value="USD">🇺🇸 USD</option>
                                 <option value="EUR">🇪🇺 EUR</option>
+                                <option value="USDT">₮ USDT</option>
                             </select>
                         </div>
                     </div>
@@ -175,8 +179,13 @@ export default function QuoteCalculator() {
                                     <option value="wire">Vía Wire Transfer</option>
                                     <option value="ach">Vía ACH</option>
                                 </>
-                            ) : (
+                            ) : fromCurrency === "EUR" ? (
                                 <option value="sepa">Vía SEPA Instant</option>
+                            ) : (
+                                <>
+                                    <option value="trc20">Vía TRC20</option>
+                                    <option value="erc20">Vía ERC20</option>
+                                </>
                             )}
                         </select>
                     </div>
@@ -210,7 +219,7 @@ export default function QuoteCalculator() {
                             {loading ? (
                                 <span className="animate-pulse text-gold-deep/50">Calculando...</span>
                             ) : calculation.customQuote ? (
-                                <span className="text-lg text-gold-light italic">Tasa Preferencial Vip</span>
+                                <span className="text-lg text-gold-light italic">multi-corredor</span>
                             ) : (
                                 <span className="text-gold-light animate-fade-in truncate">
                                     {toCurrency === "COP"
@@ -253,7 +262,7 @@ export default function QuoteCalculator() {
 
                 {/* CTA */}
                 <GoldButton onClick={handleCtaClick} size="lg" className="w-full text-sm tracking-wider">
-                    {calculation.customQuote ? "SOLICITAR COTIZACIÓN VIP →" : "📉 INICIAR TRANSFERENCIA →"}
+                    {calculation.customQuote ? "SOLICITAR OPERACIÓN MULTI-CORREDOR →" : "📉 INICIAR TRANSFERENCIA →"}
                 </GoldButton>
 
             </div>

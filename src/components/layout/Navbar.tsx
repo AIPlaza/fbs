@@ -39,24 +39,21 @@ export default function Navbar() {
     return (
         <nav
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-                    ? 'bg-black/80 backdrop-blur-xl border-b border-gold-deep/20 py-4'
-                    : 'bg-transparent py-6'
+                ? 'bg-black/80 backdrop-blur-xl border-b border-gold-deep/20 py-4'
+                : 'bg-transparent py-6'
                 }`}
         >
             <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2 group">
-                    <div className="relative w-10 h-10 grayscale group-hover:grayscale-0 transition-all duration-500">
+                    <div className="relative w-40 h-10 grayscale group-hover:grayscale-0 transition-all duration-500">
                         <Image
-                            src="/logo.png"
+                            src="/logo-dark.png"
                             alt="FBS Logo"
                             fill
                             className="object-contain"
                         />
                     </div>
-                    <span className="text-xl md:text-2xl font-black tracking-tighter text-white">
-                        <span className="text-gold-deep">₿</span>ROK<span className="text-gold-deep">€</span>R<span className="text-gold-deep font-bold">$</span>
-                    </span>
                 </Link>
 
                 {/* Desktop Navigation */}

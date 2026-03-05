@@ -49,20 +49,7 @@ export default function TrustSignals() {
         <section className="py-24 relative z-10">
             <div className="container mx-auto px-4 max-w-6xl">
 
-                {/* Giant Verified Ops Counter */}
-                <div className="text-center mb-20 relative">
-                    <div className="absolute inset-0 bg-gold-radial opacity-20 blur-[100px] rounded-full pointer-events-none" />
-                    <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gold-deep via-gold-light to-gold-deep tracking-tight mb-4 inline-block drop-shadow-[0_0_15px_rgba(191,151,57,0.3)]">
-                        <AnimatedCounter value={12500} prefix="+" suffix=" Ops Verificadas" duration={2.5} />
-                    </h2>
-                    <div className="flex items-center justify-center gap-2 text-green-400 font-bold uppercase tracking-widest text-sm">
-                        <span className="relative flex h-3 w-3">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                            <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500" />
-                        </span>
-                        <span>Cambiados sin problemas</span>
-                    </div>
-                </div>
+                {/* Removed Ops Counter till we have real data */}
 
                 {/* 4 Compliance Badges */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

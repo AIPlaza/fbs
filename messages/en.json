@@ -86,7 +86,7 @@
         "q3": "Do I have to open an account or create a login?",
         "a3": "No. We operate a 'concierge' model. You only need to write us on WhatsApp. We perform KYC validations via chat the first time (ID document) and then you transact freely with your assigned broker.",
         "q4": "What are the minimum and maximum amounts?",
-        "a4": "The minimum amount per operation is $500 USD/EUR. The standard daily maximum amount is $50,000 USD. However, for B2B corporate accounts we can handle larger volumes upon prior request and strict legal mandate."
+        "a4": "The minimum amount per operation is $100 or according to the chosen rail. The standard daily maximum amount is $50,000 USD. For B2B corporate accounts we handle higher volumes."
     },
     "FinalCta": {
         "title": "Ready for your first operation?",

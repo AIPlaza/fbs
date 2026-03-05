@@ -1,7 +1,6 @@
 import { useTranslations } from 'next-intl';
 import CurrencyTicker from '@/components/ui/CurrencyTicker';
 import QuoteCalculator from '@/components/hero/QuoteCalculator';
-import StatsBar from '@/components/sections/StatsBar';
 import HowItWorks from '@/components/sections/HowItWorks';
 import Archetypes from '@/components/sections/Archetypes';
 import TrustSignals from '@/components/sections/TrustSignals';
@@ -56,10 +55,6 @@ export default function Home() {
       </section>
 
       {/* Home Page Flow - Wrapped in AnimatedSections */}
-      <AnimatedSection>
-        <StatsBar />
-      </AnimatedSection>
-
       <AnimatedSection delay={0.1}>
         <HowItWorks />
       </AnimatedSection>

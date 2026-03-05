@@ -1,59 +1,130 @@
-# FBS Calculator — 42 User Stories (Dasbanq & NexxdiPay Engine)
+# 🧮 FBS Calculator: 42 User Stories
+> **Calculation Engine:** Dasbanq (USD/EUR) + NexxdiPay/LoopayX (COP/USDT)
 
-**Goal:** Create a "seamless, magical" experience for the user. They select "Send USD/EUR" via specific rails (SEPA, Wire, ACH) and immediately see exactly how much COP or USDT their recipient gets, with all complex fee logic (Dasbanq rates, NexxdiPay MAX spreads, fixed + % fees) abstracted away behind a beautiful UI.
+This document outlines the business logic and user experience (UX) for the FBS premium quote calculator. The goal is to abstract institutional complexity behind a "magical" interface where the user only sees what truly matters: **how much they send and how much they receive.**
 
-## Theme 1: Core UX & "The Magic Feel" (US01-US07)
-1. **US01:** As a user, I want to see a clean, minimalist calculator on the hero section without overwhelming tables or rate comparisons.
-2. **US02:** As a user, when I enter "1000" in the "Send" field, the "Receive" field updates instantly with a smooth number-rolling animation.
-3. **US03:** As a user, I want the system to automatically deduct all rail fees and commissions so the "Receive" amount is the absolute net value my family/provider will get.
-4. **US04:** As a user, I want to swap between "Send" and "Receive" modes just by clicking a center gold arrow icon.
-5. **US05:** As a user, I want to see a subtle "Live Data" indicator (pinging green dot) so I know the rates are real-time.
-6. **US06:** As a user, I don't want to see "Dasbanq" or "NexxdiPay" logos in the calculator; the data should feel like native FBS institutional intelligence.
-7. **US07:** As a user, if I enter an amount below the $500 minimum, the UI should gracefully auto-correct to $500 and show a gentle tooltip.
+---
 
-## Theme 2: Fiat Input & Output Selection (US08-US14)
-8. **US08:** As a sender from Europe, I want to select "Send EUR (SEPA)" from a beautiful dropdown with an EU flag.
-9. **US09:** As a sender from the US, I want to select "Send USD (Wire)" or "Send USD (ACH)" from the dropdown and clearly distinguish them by label.
-10. **US10:** As a receiver in Colombia, I want to select "Receive COP (Bancolombia/Nequi)" with a Colombian flag.
-11. **US11:** As a crypto user, I want to select "Receive USDT (TRC20/ERC20)" with a Tether logo.
-12. **US12:** As a user, if I select EUR as input, the calculator uses Dasbanq EUR/USD rates behind the scenes to find the USD base.
-13. **US13:** As a user, the currency selector should feel like a premium mobile iOS picker, smooth and tactile.
-14. **US14:** As a user, switching the input currency from USD to EUR should instantly recalculate the output without page reloads.
+## 🏗️ Engine Architecture (Visualization)
 
-## Theme 3: The COP Engine (NexxdiPay / LoopayX) (US15-US21)
-15. **US15:** As the system, I must fetch rates from NexxdiPay and LoopayX every 5 seconds.
-16. **US16:** As the system, I must select the `MAX` rate between NexxdiPay and LoopayX as the base COP rate.
-17. **US17:** As the system, I must subtract the configured spread (e.g., $12 COP) from the `MAX` rate before presenting it to the math engine.
-18. **US18:** As the system, if LoopayX goes offline ($0), I must seamlessly fallback to using only NexxdiPay, and vice versa.
-19. **US19:** As a user sending $1K-$5K USD to COP, the system should automatically deduct the 0.2% + $2,000 COP fee from the final COP amount.
-20. **US20:** As a user sending >$5K USD to COP, the system should automatically deduct the fixed $2,400 COP fee (ignoring the %).
-21. **US21:** As a user, I just see the final COP amount. If I hover over an "Info" icon, a sleek tooltip says "Todas las comisiones incluidas — Lo que ves es lo que llega."
+```mermaid
+graph TD
+    A[User: Sends USD/EUR] --> B{Source Currency}
+    B -- EUR --> C[Dasbanq: EUR/USD Rate]
+    B -- USD --> D[USD Base]
+    C --> D
+    D --> E[Deduction: Rail Fee ACH/Wire/SEPA]
+    E --> F[Deduction: Volume Commission %]
+    F --> G{Destination Currency}
+    G -- COP --> H[NexxdiPay/LoopayX: MAX Rate]
+    G -- USDT --> I[Crypto Rail: 1:1 + 0.5% Fee]
+    H --> J[Final Net COP]
+    I --> K[Final Net USDT]
+    J --> L[WhatsApp CTWA Handoff]
+    K --> L
+```
 
-## Theme 4: The USD/EUR & International Engine (Dasbanq) (US22-US28)
-22. **US22:** As the system, I must fetch live EUR/USD buy/sell spreads from Dasbanq.
-23. **US23:** As a user sending EUR, the system uses the Dasbanq "Venta" rate to convert my EUR to the USD base internal value.
-24. **US24:** As a user sending $<1,000 USD internationally, the system deducts a 2% volume commission.
-25. **US25:** As a user sending $1,000-$3,000 USD internationally, the system deducts a 1.5% volume commission.
-26. **US26:** As a user entering >$3,000 USD for international routes, the output should say "Tasa Preferencial" and prompt me to click WhatsApp for a custom VIP quote.
-27. **US27:** As the system, if I select "Send USD (Wire)", a fixed $25 fee is deducted from the base before conversion.
-28. **US28:** As the system, if I select "Send EUR (SEPA)", a fixed $2 fee is deducted from the base before conversion.
+---
 
-## Theme 5: Crypto Output (USDT) (US29-US32)
-29. **US29:** As a user selecting "Receive USDT", the system calculates my payout in USDT at a 1:1 ratio with the USD base.
-30. **US30:** As the system, I must deduct a strict 0.5% crypto processing fee from the total USDT payout.
-31. **US31:** As a user, if I send 1000 EUR via SEPA to receive USDT, the system calculates: (1000 EUR * Dasbanq EUR/USD) - $2 SEPA fee - 0.5% Crypto fee = Net USDT.
-32. **US32:** As a user, the transition to USDT output should feel native and trustworthy, with no mention of volatile crypto exchanges.
+## 💎 Themes & Requirements
 
-## Theme 6: CTWA Handoff (WhatsApp) (US33-US37)
-33. **US33:** As a user, when I click "Iniciar Transferencia en WhatsApp", it captures my exact inputs.
-34. **US34:** As the system, the generated WhatsApp message must read: "Hola, quiero cotizar un envío de [1000] [EUR - SEPA] para recibir [COP]. Mi cotización en web fue [4,200,500 COP]."
-35. **US35:** As a tracking system, clicking the CTWA button fires a Meta Pixel `Contact` event with the `value` parameter set to the USD equivalent.
-36. **US36:** As a tracking system, clicking the CTWA button fires a GA4 `whatsapp_click` event.
-37. **US37:** As an ad-driven user, my UTM tags from the URL are appended to the WhatsApp message invisibly or stored so the broker sees my origin.
+### 1. "Magical" User Experience (UX)
+| ID | User Story | Implementation Detail |
+|:---|:---|:---|
+| **US01** | **Minimalist Interface** | The calculator dominates the hero without confusing rate tables. |
+| **US02** | **Rolling Numbers** | Instant response with counter animation while typing. |
+| **US03** | **Net-to-Net Calculation** | All commissions are deducted *before* the final result. |
+| **US04** | **Swap Mode** | Center button to invert flow (Send ↔ Receive). |
+| **US05** | **Live Status** | Pinging green dot indicating "Live Data". |
+| **US06** | **FBS Branding** | Total abstraction of providers (Dasbanq/NexxdiPay hidden). |
+| **US07** | **Auto-Correction** | If amount is below corridor minimum ($100 for USD/USDT, others TBD), auto-adjust to minimum with a tooltip. |
 
-## Theme 7: Edge Cases & Resilience (US38-US42)
-38. **US38:** As the system, if Dasbanq API times out, I use an intelligent 5-minute cached fallback rate so the user never sees an error.
-39. **US39:** As a user, if I type letters into the calculator amount field, it only accepts numeric inputs with formatting.
-40. **US40:** As the system, API caching ensures the `QuoteCalculator` never slows down the initial LCP page load.
-41. **US41:** As a mobile user, tapping the input field brings up the numeric keypad, not the standard keyboard.
-42. **US42:** As the system, the data polling happens exclusively Server-Side using Next.js route handlers (`/api/rates`), protecting our Dasbanq and NexxdiPay API footprints from client-side scraping.
+> [!TIP]
+> **"Wow" Effect:** The user should never see a loading state. Calculation happens in real-time while the keyboard is active.
+
+---
+
+### 2. Currency Selection & International Rails
+| ID | Flow | Visual / Logical Requirement |
+|:---|:---|:---|
+| **US08** | **EUR Input** | Dropdown with EU flag and SEPA label. |
+| **US09** | **USD Input** | Clear selector between WIRE and ACH. |
+| **US10** | **COP Output** | Colombia flag + Bancolombia/Nequi logos. |
+| **US11** | **USDT Output** | Tether (USDT) logo + Protocols (TRC20/ERC20). |
+| **US12** | **Logic Base** | EUR → USD conversion using Dasbanq sell spread. |
+| **US13** | **Tactile UI** | Selectors with haptic feedback (iOS look & feel). |
+| **US14** | **Hot-Swap** | Currency change without page refresh. |
+
+---
+
+### 2.1 Active Corridors & Minimums
+| ID | User Story (Corridor) | Input Rail | Output Rail | Minimum Amount |
+|:---|:---|:---|:---|:---|
+| **US43** | **USDT → COP (Primary)** | USDT TRC20/ERC20 | COP — Bancolombia/Nequi/Daviplata | $100 USDT |
+| **US44** | **EUR → COP** | EUR SEPA | COP — Bancolombia/Nequi | TBD |
+| **US45** | **EUR → USDT** | EUR SEPA | USDT TRC20/ERC20 | TBD |
+| **US46** | **USD → COP** | USD Wire/ACH | COP — Bancolombia/Nequi | $100 USD |
+| **US47** | **USD → MXN** | USD ACH | MXN SPEI | $100 USD |
+| **US48** | **MXN → USDT** | MXN SPEI | USDT TRC20/ERC20 | TBD |
+| **US49** | **USDT → EUR** | USDT | EUR SEPA | TBD |
+| **US50** | **COL → VES (Secondary)** | COP / USDT | VES / USDT | TBD |
+
+---
+
+### 3. COP Engine (NexxdiPay / LoopayX)
+| ID | Business Logic | Technical Rule |
+|:---|:---|:---|
+| **US15** | **Polling Frequency** | Fetch rates every 5 seconds (SR-side). |
+| **US16** | **Rate Optimization** | Formula: `Math.max(NexxdiPay, LoopayX)`. |
+| **US17** | **FBS Spread** | Subtract $[X] COP from MAX rate before displaying. |
+| **US18** | **Resilience/Fallback** | If one provider fails (0), use the other automatically. |
+| **US19** | **Tier 1 (1K-5K)** | Deduction: 0.2% + $2,000 COP fixed. |
+| **US20** | **Tier 2 (>5K)** | Deduction: $2,400 COP fixed (ignores percentage). |
+| **US21** | **Transparency** | Tooltip: "What you see is what you get". |
+
+---
+
+### 4. International Engine (Dasbanq USD/EUR)
+> [!IMPORTANT]
+> **OTC Desk Limits:** For amounts exceeding $3,000 USD, the system must block the automatic calculation and enable **VIP Quoting** via WhatsApp to offer competitive whale spreads.
+
+| ID | Volume Rule | Applied Commission |
+|:---|:---|:---|
+| **US24** | Less than $1,000 USD | 2.0% |
+| **US25** | $1,000 to $3,000 USD | 1.5% |
+| **US26** | **Over $3,000 USD** | **VIP Quote (WhatsApp Only)** |
+
+**Rail Fees:**
+- **US27:** Outbound via USD Wire → -$25 USD from base.
+- **US28:** Inbound via EUR SEPA → -$2 USD from base.
+
+---
+
+### 5. Crypto Output (USDT)
+- **US29:** 1:1 parity ratio with the net USD base.
+- **US30:** Fixed crypto processing fee: **0.5%**.
+- **US31:** Flow example: `(1000 EUR * Rate) - $2 SEPA - 0.5% Fee = Net USDT`.
+- **US32:** UX Trust: No mention of volatile exchanges; USDT is treated as digital dollar.
+
+---
+
+### 6. CTWA Handoff (WhatsApp)
+- **US33:** Capture full calculator `state` on click.
+- **US34:** **Structured Message:** "Hi, I want to quote a transfer of [Amount] [Currency-Rail] to receive [COP/USDT]. Web quote: [Result]."
+- **US35:** **Meta Pixel:** Fire `Contact` event with value in USD.
+- **US36:** **GA4:** Fire `whatsapp_click` event with currency parameters.
+- **US37:** **UTM Persistence:** Marketing tags are injected into the message or logged for the broker.
+
+---
+
+### 7. Resilience & Security (Edge Cases)
+- **US38:** **Intelligent Fallback:** 5-minute cache if Dasbanq fails.
+- **US39:** **Input Sanitization:** Block non-numeric characters.
+- **US40:** **LCP Optimization:** Server-side caching to avoid blocking initial render.
+- **US41:** **Mobile UX:** `inputmode="decimal"` attribute for numeric keypad.
+- **US42:** **Anti-Scraping:** Polling happens at `/api/rates` (Next.js handles), protecting original API Keys.
+
+---
+
+> [!NOTE]
+> **Reference Document:** This set of user stories is the acceptance contract for the `QuoteCalculator.tsx` component development.

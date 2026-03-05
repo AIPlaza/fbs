@@ -75,6 +75,32 @@ export default function Archetypes() {
             cta: t("t5_cta"),
             utm: "trader",
         },
+        {
+            id: 6,
+            name: t("t6_title"),
+            icon: (
+                <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+            ),
+            headline: t("t6_head"),
+            body: t("t6_body"),
+            cta: t("t6_cta"),
+            utm: "importador",
+        },
+        {
+            id: 7,
+            name: t("t7_title"),
+            icon: (
+                <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            ),
+            headline: t("t7_head"),
+            body: t("t7_body"),
+            cta: t("t7_cta"),
+            utm: "nomada",
+        },
     ];
 
     const activeContent = archetypes.find((a) => a.id === activeTab);
@@ -101,8 +127,8 @@ export default function Archetypes() {
                                 key={a.id}
                                 onClick={() => setActiveTab(a.id)}
                                 className={`flex items-center gap-3 p-4 rounded-2xl text-left border transition-all duration-300 ${activeTab === a.id
-                                        ? "bg-gold-deep/10 border-gold-deep/40 text-white shadow-[inset_4px_0_0_0_#BF9739]"
-                                        : "bg-surface-alt/50 border-white/5 text-slate-400 hover:bg-white/5 hover:text-slate-200"
+                                    ? "bg-gold-deep/10 border-gold-deep/40 text-white shadow-[inset_4px_0_0_0_#BF9739]"
+                                    : "bg-surface-alt/50 border-white/5 text-slate-400 hover:bg-white/5 hover:text-slate-200"
                                     }`}
                             >
                                 <div className={activeTab === a.id ? "text-gold-light" : "text-slate-500"}>

@@ -62,8 +62,16 @@
         "t4_cta": "Abrir cuenta corporativa →",
         "t5_title": "Trader / Arbitrador",
         "t5_head": "Liquidez en USDT al precio de mercado. Rápido.",
-        "t5_body": "Necesitas liquidez en USDT TRC20 o ERC20 para arbitrar entre plataformas o mover capital a velocidad. FBS te da tasas preferenciales por volumen, sin los delays de los exchanges, con bróker disponible en tiempo real.",
-        "t5_cta": "Consultar tasa por volumen →"
+        "t5_body": "Intermediario que mueve fondos a sus propias cuentas. Ideal para quienes necesitan mover capital con rapidez, sin delays y con un bróker en tiempo real (No arbitraje para terceros).",
+        "t5_cta": "Consultar tasa por volumen →",
+        "t6_title": "Importador / Exportador",
+        "t6_head": "Pago de proveedores o cobro de exportaciones con compliance pleno.",
+        "t6_body": "Valoramos tu seguridad y cumplimiento normativo. Operaciones seguras, rápidas y registradas ante la UIAF.",
+        "t6_cta": "Cotizar operación comercial →",
+        "t7_title": "Nómada Digital",
+        "t7_head": "Monetiza tus ingresos del exterior donde estés.",
+        "t7_body": "Recibe tus pagos como nómada en tus cuentas en Colombia a las mejores tasas, siempre transparente.",
+        "t7_cta": "Cotizar mis ingresos →"
     },
     "Trust": {
         "counter": "+1,500 Operaciones Verificadas",
@@ -74,19 +82,19 @@
         "b3_title": "Transferencias Seguras",
         "b3_sub": "Respaldo legal y cifrado E2E",
         "b4_title": "Legal Compliance",
-        "b4_sub": "Cumplimiento normativo Colombia y USA",
+        "b4_sub": "Registrado ante la UIAF como PSAV — Colombia",
         "footerNote": "Datos de mercado institucionales: Dasbanq & NexxdiPay"
     },
     "Faq": {
         "title": "Preguntas Frecuentes",
         "q1": "¿Cuánto tardan las operaciones?",
-        "a1": "Típicamente entre 15 y 45 minutos una vez confirmado el recibo de tus fondos en nuestras cuentas de USA o Europa. Las entregas en USDT son casi inmediatas. Si es a cuentas Bancolombia o Nequi, máximo 2 horas hábiles.",
+        "a1": "Mismo día hábil para operaciones antes de 12PM.",
         "q2": "¿Tienen comisiones ocultas?",
         "a2": "No. El spread (spread bancario) ya está incluido en la tasa de cambio que te da el bróker en WhatsApp. La tasa que ves en el cotizador es muy cercana a la real. El monto acordado es exactamente el monto que recibes.",
         "q3": "¿Tengo que abrir una cuenta o crear un login?",
         "a3": "No. Operamos un modelo 'concierge'. Solo necesitas escribirnos a WhatsApp. Realizamos validaciones KYC por chat la primera vez (documento de identidad) y luego transaccionas libremente con tu bróker asignado.",
         "q4": "¿Cuáles son los montos mínimos y máximos?",
-        "a4": "El monto mínimo por operación es de $500 USD/EUR. El monto máximo diario estándar es de $50,000 USD. Sin embargo, para cuentas corporativas B2B podemos manejar volúmenes mayores bajo solicitud previa y mandato legal extricto."
+        "a4": "El monto mínimo por operación es de $100 genérico o según el riel establecido. El monto máximo diario estándar es de $50,000 USD. Para cuentas corporativas B2B manejamos mayores volúmenes."
     },
     "FinalCta": {
         "title": "¿Listo para tu primera operación?",

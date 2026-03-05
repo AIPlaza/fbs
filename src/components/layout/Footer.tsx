@@ -22,9 +22,9 @@ export default function Footer() {
             { name: "Política de Cookies", href: "/confianza" },
         ],
         contacto: [
-            { name: "+57 (300) 123-4567", href: "https://wa.me/573001234567" },
-            { name: "soporte@fbs-broker.com", href: "mailto:soporte@fbs-broker.com" },
-            { name: "Atención 24/7", href: "#" },
+            { name: "+57 311 570 1987", href: "https://wa.me/573115701987" },
+            { name: "contact@fullbrokersservices.app", href: "mailto:contact@fullbrokersservices.app" },
+            { name: "synerbit.xyz", href: "https://synerbit.xyz" },
         ],
     };
 
@@ -38,12 +38,9 @@ export default function Footer() {
                     {/* Brand Col */}
                     <div className="space-y-6">
                         <Link href="/" className="flex items-center gap-2 group">
-                            <div className="relative w-8 h-8 opacity-70 group-hover:opacity-100 transition-opacity">
-                                <Image src="/logo.png" alt="FBS Logo" fill className="object-contain" />
+                            <div className="relative w-40 h-10 opacity-70 group-hover:opacity-100 transition-opacity">
+                                <Image src="/logo-dark.png" alt="FBS Logo" fill className="object-contain" />
                             </div>
-                            <span className="text-xl font-black tracking-tighter text-white">
-                                <span className="text-gold-deep">₿</span>ROK<span className="text-gold-deep">€</span>R<span className="text-gold-deep font-bold">$</span>
-                            </span>
                         </Link>
                         <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
                             <strong>{t("tagline")}</strong> {t("description")}
